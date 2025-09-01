@@ -9,6 +9,29 @@
     <!-- Add these script tags before closing </head> tag -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <!-- Add this RIGHT BEFORE your existing <script> tag in index.html -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+    // Initialize Supabase with YOUR credentials
+    const SUPABASE_URL = 'https://kwmwcrcmihofvsaugciu.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXdjcmNtaWhvZnZzYXVnY2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTQwNjgsImV4cCI6MjA3MjMzMDA2OH0.gvioiJOYmIWObQ9rMwDt2KRhiigZiger5IJKUZ_Cqfk'
+
+    // Wait for page to load, then initialize Supabase
+    window.addEventListener('DOMContentLoaded', function() {
+        // Initialize Supabase client
+        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase initialized successfully!');
+    });
+    </script>
+
+    <script>
+    // Add this for debugging - remove after testing
+    window.addEventListener('load', function() {
+        console.log('Page loaded');
+        console.log('Supabase available:', typeof supabase !== 'undefined');
+        console.log('Supabase client:', window.supabaseClient);
+    });
+    </script>
 
 </head>
 <body>
@@ -369,5 +392,335 @@
     <div id="notificationContainer" class="notification-container"></div>
 
     <script src="script.js"></script>
+    <script>
+
+    // Database helper functions
+    const DB = {
+        // Get current user
+        getCurrentUser() {
+            return JSON.parse(sessionStorage.getItem('ivoice_current_user'));
+        },
+
+        // Parties CRUD
+        async getParties() {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('parties')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            return data || [];
+        },
+
+        async addParty(party) {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('parties')
+                .insert([{ ...party, user_id: user.id }])
+                .select()
+                .single();
+            
+            if (error) throw error;
+            return data;
+        },
+
+        // Items CRUD
+        async getItems() {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('items')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            return data || [];
+        },
+
+        async addItem(item) {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('items')
+                .insert([{ ...item, user_id: user.id }])
+                .select()
+                .single();
+            
+            if (error) throw error;
+            return data;
+        },
+
+        // Invoices CRUD
+        async getInvoices() {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('invoices')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            return data || [];
+        },
+
+        async addInvoice(invoice) {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('invoices')
+                .insert([{ ...invoice, user_id: user.id }])
+                .select()
+                .single();
+            
+            if (error) throw error;
+            return data;
+        },
+
+        async deleteInvoice(id) {
+            const { error } = await supabase
+                .from('invoices')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw error;
+        },
+
+        // Get next invoice number
+        async getNextInvoiceNumber() {
+            const user = this.getCurrentUser();
+            const { data, error } = await supabase
+                .from('invoices')
+                .select('invoice_number')
+                .eq('user_id', user.id)
+                .order('invoice_number', { ascending: false })
+                .limit(1);
+            
+            if (error) throw error;
+            
+            if (data && data.length > 0) {
+                const lastNumber = parseInt(data[0].invoice_number);
+                return isNaN(lastNumber) ? 1001 : lastNumber + 1;
+            }
+            return 1001; // Starting number
+        }
+    };
+
+    // Update existing functions to use Supabase
+    const originalInitDatabase = initDatabase;
+    initDatabase = async function() {
+        // Keep existing logic but don't need localStorage for main data
+        currentUser = JSON.parse(sessionStorage.getItem('ivoice_current_user'));
+        if (!currentUser) {
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        try {
+            // Initialize with Supabase data
+            db = {
+                parties: await DB.getParties(),
+                items: await DB.getItems(),
+                invoices: await DB.getInvoices(),
+                nextInvoiceId: await DB.getNextInvoiceNumber()
+            };
+        } catch (error) {
+            console.error('Database initialization error:', error);
+            // Fallback to original localStorage method
+            originalInitDatabase();
+        }
+    };
+
+    // Update loadParties function
+    const originalLoadParties = loadParties;
+    loadParties = async function() {
+        try {
+            db.parties = await DB.getParties();
+            originalLoadParties();
+        } catch (error) {
+            console.error('Error loading parties:', error);
+            showNotification('Error loading parties: ' + error.message, 'error');
+        }
+    };
+
+    // Update loadItems function
+    const originalLoadItems = loadItems;
+    loadItems = async function() {
+        try {
+            db.items = await DB.getItems();
+            originalLoadItems();
+        } catch (error) {
+            console.error('Error loading items:', error);
+            showNotification('Error loading items: ' + error.message, 'error');
+        }
+    };
+
+    // Update loadInvoices function
+    const originalLoadInvoices = loadInvoices;
+    loadInvoices = async function() {
+        try {
+            db.invoices = await DB.getInvoices();
+            originalLoadInvoices();
+        } catch (error) {
+            console.error('Error loading invoices:', error);
+            showNotification('Error loading invoices: ' + error.message, 'error');
+        }
+    };
+
+    // Update addParty function
+    const originalAddParty = addParty;
+    addParty = async function(event) {
+        event.preventDefault();
+        
+        try {
+            const party = {
+                name: document.getElementById('partyName').value,
+                phone: document.getElementById('partyPhone').value,
+                email: document.getElementById('partyEmail').value,
+                gst_number: document.getElementById('partyGST').value,
+                address: document.getElementById('partyAddress').value,
+                state: document.getElementById('partyState').value
+            };
+
+            await DB.addParty(party);
+            
+            closeModal('addPartyModal');
+            await loadParties();
+            updateDashboard();
+            
+            document.querySelector('#addPartyModal form').reset();
+            showNotification('Party added successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error adding party:', error);
+            showNotification('Error adding party: ' + error.message, 'error');
+        }
+    };
+
+    // Update addItem function
+    const originalAddItem = addItem;
+    addItem = async function(event) {
+        event.preventDefault();
+        
+        try {
+            const item = {
+                name: document.getElementById('itemName').value,
+                hsn: document.getElementById('itemHSN').value,
+                unit: document.getElementById('itemUnit').value,
+                rate: parseFloat(document.getElementById('itemRate').value),
+                gst_rate: parseFloat(document.getElementById('itemGSTRate').value),
+                stock: parseInt(document.getElementById('itemStock').value) || 0
+            };
+
+            await DB.addItem(item);
+            
+            closeModal('addItemModal');
+            await loadItems();
+            updateDashboard();
+            
+            document.querySelector('#addItemModal form').reset();
+            showNotification('Item added successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error adding item:', error);
+            showNotification('Error adding item: ' + error.message, 'error');
+        }
+    };
+
+    // Update saveInvoice function
+    const originalSaveInvoice = saveInvoice;
+    saveInvoice = async function() {
+        const partyId = parseInt(document.getElementById('invoiceParty').value);
+        const date = document.getElementById('invoiceDate').value;
+        
+        if (!partyId || !date) {
+            showNotification('Please fill all required fields', 'error');
+            return;
+        }
+        
+        try {
+            const invoiceNumber = await DB.getNextInvoiceNumber();
+            
+            const items = [];
+            document.querySelectorAll('.item-row').forEach(row => {
+                const itemId = parseInt(row.querySelector('.item-select').value);
+                const qty = parseFloat(row.querySelector('.item-qty').value);
+                const rate = parseFloat(row.querySelector('.item-rate').value);
+                const total = parseFloat(row.querySelector('.item-total').value);
+                
+                if (itemId && qty && rate) {
+                    const item = db.items.find(i => i.id === itemId);
+                    items.push({ 
+                        item_id: itemId,
+                        qty, 
+                        rate, 
+                        total,
+                        gst_rate: item?.gst_rate || 18,
+                        hsn: item?.hsn || '',
+                        name: item?.name || ''
+                    });
+                }
+            });
+            
+            if (items.length === 0) {
+                showNotification('Please add at least one item', 'error');
+                return;
+            }
+            
+            const subtotal = items.reduce((sum, item) => sum + item.total, 0);
+            const tax = items.reduce((sum, item) => sum + (item.total * item.gst_rate / 100), 0);
+            const total = subtotal + tax;
+            const received = parseFloat(document.getElementById('receivedAmount').value) || 0;
+            const balance = total - received;
+            
+            const invoice = {
+                invoice_number: invoiceNumber.toString(),
+                party_id: partyId,
+                date: date,
+                payment_type: document.getElementById('paymentType').value,
+                po_date: document.getElementById('poDate').value || null,
+                po_number: document.getElementById('poNumber').value,
+                eway_bill: document.getElementById('eWayBill').value,
+                items: JSON.stringify(items),
+                subtotal: subtotal,
+                tax: tax,
+                total: total,
+                received: received,
+                balance: balance,
+                paid: balance <= 0
+            };
+
+            await DB.addInvoice(invoice);
+            
+            closeModal('invoiceModal');
+            await loadInvoices();
+            updateDashboard();
+            
+            showNotification(`Invoice #${invoiceNumber} created successfully!`, 'success');
+            
+        } catch (error) {
+            console.error('Error saving invoice:', error);
+            showNotification('Error saving invoice: ' + error.message, 'error');
+        }
+    };
+
+    // Update deleteInvoice function
+    const originalDeleteInvoice = deleteInvoice;
+    deleteInvoice = function(invoiceId) {
+        showConfirm('Are you sure you want to delete this invoice?', async (confirmed) => {
+            if (confirmed) {
+                try {
+                    await DB.deleteInvoice(invoiceId);
+                    await loadInvoices();
+                    updateDashboard();
+                    showNotification('Invoice deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting invoice:', error);
+                    showNotification('Error deleting invoice: ' + error.message, 'error');
+                }
+            }
+        });
+    };
+    </script>
+
 </body>
 </html>

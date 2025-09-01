@@ -7,6 +7,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Add this RIGHT BEFORE your existing <script> tag in index.html -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+    // Initialize Supabase with YOUR credentials
+    const SUPABASE_URL = 'https://kwmwcrcmihofvsaugciu.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bXdjcmNtaWhvZnZzYXVnY2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTQwNjgsImV4cCI6MjA3MjMzMDA2OH0.gvioiJOYmIWObQ9rMwDt2KRhiigZiger5IJKUZ_Cqfk'
+
+    // Wait for page to load, then initialize Supabase
+    window.addEventListener('DOMContentLoaded', function() {
+        // Initialize Supabase client
+        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase initialized successfully!');
+    });
+    </script>
+
+    <script>
+    // Add this for debugging - remove after testing
+    window.addEventListener('load', function() {
+        console.log('Page loaded');
+        console.log('Supabase available:', typeof supabase !== 'undefined');
+        console.log('Supabase client:', window.supabaseClient);
+    });
+    </script>
+
+
+
     <style>
         /* CSS Variables - Enhanced Business Theme */
         :root {
@@ -1751,15 +1777,14 @@
             showSection('login'); 
         }
 
-        // Registration
-        function registerUser(event) {
+        // Updated Registration with Supabase
+        async function registerUser(event) {
             event.preventDefault();
             
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
 
-            // Validate inputs
             if (!name || !email || !password) {
                 alert('Please fill all fields!');
                 return;
@@ -1770,26 +1795,50 @@
                 return;
             }
 
-            // Check if user already exists
-            const existingUsers = JSON.parse(localStorage.getItem('ivoice_users') || '[]');
-            if (existingUsers.find(user => user.email.toLowerCase() === email.toLowerCase())) {
-                alert('User already exists! Please login.');
+            try {
+                // Check if Supabase is loaded
+                if (!window.supabaseClient) {
+                    alert('Database connection not ready. Please try again in a moment.');
+                    return;
+                }
+
+                // Check if user exists
+                const { data: existingUser } = await window.supabaseClient
+                    .from('users')
+                    .select('email')
+                    .eq('email', email.toLowerCase());
+
+                if (existingUser && existingUser.length > 0) {
+                    alert('User already exists! Please login.');
+                    showLogin();
+                    return;
+                }
+
+                // Create new user
+                const { data, error } = await window.supabaseClient
+                    .from('users')
+                    .insert([{ 
+                        name: name, 
+                        email: email.toLowerCase(), 
+                        password: password 
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                alert('Registration successful! Please login.');
+                document.getElementById('loginEmail').value = email;
                 showLogin();
-                return;
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed: ' + error.message);
             }
-
-            // Save user
-            const newUser = { name, email, password, id: Date.now() };
-            existingUsers.push(newUser);
-            localStorage.setItem('ivoice_users', JSON.stringify(existingUsers));
-
-            alert('Registration successful! Please login.');
-            document.getElementById('loginEmail').value = email;
-            showLogin();
         }
 
-        // Login
-        function loginUser(event) {
+        // Updated Login with Supabase
+        async function loginUser(event) {
             event.preventDefault();
             
             const email = document.getElementById('loginEmail').value.trim();
@@ -1800,19 +1849,41 @@
                 return;
             }
 
-            const users = JSON.parse(localStorage.getItem('ivoice_users') || '[]');
-            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+            try {
+                // Check if Supabase is loaded
+                if (!window.supabaseClient) {
+                    alert('Database connection not ready. Please try again in a moment.');
+                    return;
+                }
 
-            if (user) {
+                const { data: users, error } = await window.supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('email', email.toLowerCase())
+                    .eq('password', password);
+
+                if (error) throw error;
+
+                if (!users || users.length === 0) {
+                    alert('Invalid credentials! Please try again.');
+                    return;
+                }
+
+                const user = users[0];
+
                 // Set session
                 sessionStorage.setItem('ivoice_current_user', JSON.stringify(user));
                 
                 // Redirect to main app
                 window.location.href = 'main.html';
-            } else {
-                alert('Invalid credentials! Please try again.');
+
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed: ' + error.message);
             }
         }
+
+
 
         // Password toggle functionality
         function togglePassword(inputId) {
@@ -1898,6 +1969,8 @@
             }
         });
         </script>
+
+        
 
 </body>
 </html>
