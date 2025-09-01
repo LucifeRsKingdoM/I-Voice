@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I-Voice - Smart Billing Solution</title>
+    <title>I-Voice - Professional Invoice Management System | Free & Powerful</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
+        /* CSS Variables - Enhanced Business Theme */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: #6366f1;
+            --secondary: #06b6d4;
+            --accent: #10b981;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            
+            --gray-900: #0f172a;
+            --gray-800: #1e293b;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-500: #64748b;
+            --gray-400: #94a3b8;
+            --gray-300: #cbd5e1;
+            --gray-200: #e2e8f0;
+            --gray-100: #f1f5f9;
+            --white: #ffffff;
+            
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            --gradient-accent: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-hero: linear-gradient(135deg, #4f46e5 0%, #06b6d4 50%, #10b981 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,269 +45,1734 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: var(--white);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        /* Enhanced Floating Background Elements */
+        .bg-decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-circle-1 {
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-circle-2 {
+            top: 60%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .bg-circle-3 {
+            bottom: 20%;
+            left: 30%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        /* Professional Announcement Banner */
+        .announcement-banner {
+            background: var(--gradient-hero);
+            padding: 12px 0;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
-            backdrop-filter: blur(10px);
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Enhanced Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
         }
 
         .logo {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .tagline {
-            color: #666;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .features {
-            text-align: left;
-            margin: 2rem 0;
-        }
-
-        .feature {
             display: flex;
             align-items: center;
-            margin: 1rem 0;
-            color: #555;
+            gap: 12px;
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
         }
 
-        .feature-icon {
-            width: 20px;
-            height: 20px;
-            background: #667eea;
-            border-radius: 50%;
-            margin-right: 1rem;
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.8rem;
             color: white;
-            font-size: 0.8rem;
+            box-shadow: 0 8px 30px rgba(79, 70, 229, 0.3);
         }
 
-        .cta-button {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 1rem 0;
-            width: 100%;
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .form {
-            display: none;
-            text-align: left;
-        }
-
-        .form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #555;
+        .nav-link {
+            color: var(--gray-300);
+            text-decoration: none;
             font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
         }
 
-        .form-group input {
+        .nav-link:hover {
+            color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-hero);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-link:hover::after {
             width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .form-buttons {
+        .nav-buttons {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            align-items: center;
         }
 
         .btn {
-            flex: 1;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: #667eea;
+            background: var(--gradient-primary);
             color: white;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
         }
 
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #666;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.5);
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-light);
+            border: 2px solid var(--primary-light);
         }
 
-        .switch-form {
-            margin-top: 1rem;
-            color: #666;
+        .btn-outline:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-3px);
         }
 
-        .switch-form a {
-            color: #667eea;
-            text-decoration: none;
+        /* Spectacular Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 120px 0 80px;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            color: var(--primary-light);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.35rem;
+            color: var(--gray-300);
+            line-height: 1.7;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            opacity: 0.9;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--gradient-glass);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-400);
             font-weight: 500;
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 1.5rem;
-                width: 95%;
+        .hero-visual {
+            position: relative;
+            animation: fadeInRight 1s ease;
+        }
+
+        .invoice-mockup {
+            width: 100%;
+            height: 600px;
+            background: var(--gradient-glass);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .mockup-header {
+            height: 80px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            gap: 1rem;
+        }
+
+        .mockup-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mockup-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .mockup-title {
+            font-weight: 600;
+            color: var(--gray-300);
+            margin-left: auto;
+        }
+
+        .mockup-content {
+            padding: 2rem;
+            height: calc(100% - 80px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .invoice-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInLeft 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .invoice-item:nth-child(1) { animation-delay: 0.2s; }
+        .invoice-item:nth-child(2) { animation-delay: 0.4s; }
+        .invoice-item:nth-child(3) { animation-delay: 0.6s; }
+        .invoice-item:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
             }
-            
-            .logo {
-                font-size: 2.5rem;
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
+
+        .invoice-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .invoice-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .invoice-details h4 {
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .invoice-details p {
+            color: var(--gray-400);
+            font-size: 0.8rem;
+        }
+
+        .invoice-amount {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1.1rem;
+        }
+
+        /* Enhanced Features Section */
+        .features {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray-400);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 24px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-hero);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .feature-description {
+            color: var(--gray-400);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* Enhanced About Section */
+        .about {
+            padding: 120px 0;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            color: var(--gray-300);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .about-highlights {
+            list-style: none;
+            margin: 2.5rem 0;
+        }
+
+        .about-highlights li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-300);
+            font-size: 1.05rem;
+        }
+
+        .about-highlights i {
+            color: var(--success);
+            font-size: 1.3rem;
+            width: 24px;
+        }
+
+        .about-image {
+            background: var(--gradient-accent);
+            border-radius: 24px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><circle cx="100" cy="100" r="50" fill="rgba(255,255,255,0.1)"/><circle cx="300" cy="200" r="30" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="300" r="40" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 120px 0;
+            background: var(--gradient-dark);
+            position: relative;
+        }
+
+        .cta-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .cta-content {
+            background: var(--gradient-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4rem;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            color: var(--gray-300);
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        /* Enhanced Footer */
+        .footer {
+            background: var(--gray-900);
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-brand p {
+            color: var(--gray-400);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-section a {
+            color: var(--gray-400);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-500);
+        }
+
+        /* Enhanced Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile Responsive Enhancements */
+        @media (max-width: 1024px) {
+            .hero-container,
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-buttons,
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .invoice-mockup {
+                height: 400px;
+            }
+
+            .mockup-content {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-container,
+            .features-container,
+            .about-container,
+            .cta-container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Add this CSS to your existing styles */
+
+/* Auth Sections */
+.auth-section {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.auth-section.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 480px;
+    padding: 2rem;
+    position: relative;
+}
+
+.auth-card {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><circle cx="100" cy="100" r="50" fill="rgba(255,255,255,0.05)"/><circle cx="300" cy="200" r="30" fill="rgba(255,255,255,0.08)"/><circle cx="200" cy="300" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
+    pointer-events: none;
+    z-index: -1;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 2rem;
+}
+
+.auth-logo .logo-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4);
+}
+
+.auth-logo h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.auth-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--gray-400);
+    font-size: 1.1rem;
+}
+
+.auth-form {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: var(--gray-300);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 1rem;
+    color: var(--gray-500);
+    font-size: 1.1rem;
+    z-index: 1;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: var(--white);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.input-wrapper input::placeholder {
+    color: var(--gray-500);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.password-toggle:hover {
+    color: var(--primary-light);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-300);
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.checkbox-wrapper input {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-wrapper input:checked + .checkmark {
+    background: var(--gradient-primary);
+    border-color: var(--primary-light);
+}
+
+.checkbox-wrapper input:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: 2px solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.forgot-password {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: var(--secondary);
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.auth-btn:hover::before {
+    left: 100%;
+}
+
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+.auth-footer {
+    text-align: center;
+    color: var(--gray-400);
+    font-size: 1rem;
+}
+
+.auth-footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.auth-footer a:hover {
+    color: var(--secondary);
+}
+
+.auth-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+}
+
+.close-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--gray-400);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 1rem;
+    }
+    
+    .auth-card {
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+    }
+    
+    .auth-logo h1 {
+        font-size: 2rem;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .auth-logo .logo-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .auth-logo h1 {
+        font-size: 1.8rem;
+    }
+    
+    .input-wrapper input {
+        padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+    }
+    
+    .input-wrapper i {
+        left: 0.8rem;
+        font-size: 1rem;
+    }
+}
+
+/* Landing section (to hide when forms are active) */
+#landing {
+    display: block;
+}
+
+#landing.active {
+    display: block;
+}
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Landing Section -->
-        <div id="landing" class="section active">
-            <div class="logo">I-Voice</div>
-            <p class="tagline">Professional Billing Made Simple</p>
-            
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">✓</div>
-                    <span>Easy Invoice Generation</span>
+    <!-- Background Decoration Elements -->
+    <div class="bg-decoration bg-circle-1"></div>
+    <div class="bg-decoration bg-circle-2"></div>
+    <div class="bg-decoration bg-circle-3"></div>
+
+    <!-- Professional Announcement Banner -->
+    <div class="announcement-banner">
+        🚀 New Feature: Auto PDF Generation & Cloud Backup - Now Available! 
+        <strong>Start Your Free Trial Today</strong> ✨
+    </div>
+
+    <!-- Enhanced Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-receipt"></i>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">✓</div>
-                    <span>Client & Inventory Management</span>
+                I-Voice
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#contact" class="nav-link">Support</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-outline" onclick="showAuthModal('login')">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                <a href="#" class="btn btn-primary" onclick="showAuthModal('register')">
+                    <i class="fas fa-rocket"></i>
+                    Start Free Trial
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Spectacular Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge animate__animated animate__fadeInUp">
+                    <i class="fas fa-crown"></i>
+                    #1 Invoice Management System
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">✓</div>
-                    <span>Professional Reports</span>
+                <h1 class="hero-title animate__animated animate__fadeInUp">
+                    Professional <span style="background: linear-gradient(135deg, #06b6d4, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Invoice Management</span> Made Simple
+                </h1>
+                <p class="hero-subtitle animate__animated animate__fadeInUp">
+                    Transform your billing process with our powerful, intuitive invoice management system. Create, send, and track professional invoices in seconds. Boost your business efficiency and get paid faster.
+                </p>
+                <div class="hero-buttons animate__animated animate__fadeInUp">
+                    <a href="#" class="btn btn-primary" onclick="showAuthModal('register')">
+                        <i class="fas fa-play"></i>
+                        Start Free Trial
+                    </a>
+                    <a href="#features" class="btn btn-outline">
+                        <i class="fas fa-info-circle"></i>
+                        Learn More
+                    </a>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">✓</div>
-                    <span>Works Offline</span>
+                <div class="hero-stats animate__animated animate__fadeInUp">
+                    <div class="stat">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">1M+</div>
+                        <div class="stat-label">Invoices Created</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
                 </div>
             </div>
-            
-            <button class="cta-button" onclick="showRegister()">Start Now - It's Free!</button>
+            <div class="hero-visual">
+                <div class="invoice-mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-dots">
+                            <div class="mockup-dot dot-red"></div>
+                            <div class="mockup-dot dot-yellow"></div>
+                            <div class="mockup-dot dot-green"></div>
+                        </div>
+                        <div class="mockup-title">Invoice Dashboard</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="invoice-item">
+                            <div class="invoice-info">
+                                <div class="invoice-icon">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="invoice-details">
+                                    <h4>Invoice #1001</h4>
+                                    <p>ABC Corporation • Due Today</p>
+                                </div>
+                            </div>
+                            <div class="invoice-amount">$2,450.00</div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-info">
+                                <div class="invoice-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="invoice-details">
+                                    <h4>Invoice #1002</h4>
+                                    <p>XYZ Ltd • Paid</p>
+                                </div>
+                            </div>
+                            <div class="invoice-amount">$1,850.00</div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-info">
+                                <div class="invoice-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="invoice-details">
+                                    <h4>Invoice #1003</h4>
+                                    <p>Tech Solutions • Pending</p>
+                                </div>
+                            </div>
+                            <div class="invoice-amount">$3,200.00</div>
+                        </div>
+                        <div class="invoice-item">
+                            <div class="invoice-info">
+                                <div class="invoice-icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <div class="invoice-details">
+                                    <h4>Create New Invoice</h4>
+                                    <p>Quick & Professional</p>
+                                </div>
+                            </div>
+                            <div class="invoice-amount">
+                                <i class="fas fa-arrow-right" style="color: var(--primary-light);"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
+    <!-- Enhanced Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <div class="section-badge">Powerful Features</div>
+                <h2 class="section-title">Everything You Need to Manage Invoices</h2>
+                <p class="section-subtitle">
+                    Streamline your billing process with professional tools designed for modern businesses. From creation to payment tracking, we've got you covered.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Invoice Creation</h3>
+                    <p class="feature-description">
+                        Create professional invoices in seconds with our intelligent templates. Auto-fill customer details, add items with calculated taxes, and customize your brand.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="feature-title">Professional PDF Generation</h3>
+                    <p class="feature-description">
+                        Generate beautiful, professional PDF invoices instantly. Customizable templates, company branding, and automatic formatting for a polished look.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Real-time Analytics</h3>
+                    <p class="feature-description">
+                        Track your business performance with comprehensive analytics. Monitor payment status, revenue trends, and outstanding balances at a glance.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Customer Management</h3>
+                    <p class="feature-description">
+                        Organize all your customers in one place. Store contact details, payment history, and preferences for faster invoice creation and better relationships.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Mobile Responsive</h3>
+                    <p class="feature-description">
+                        Access your invoices anywhere, anytime. Our fully responsive design works perfectly on desktop, tablet, and mobile devices.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Secure & Reliable</h3>
+                    <p class="feature-description">
+                        Your data is protected with bank-level security. Automated backups, SSL encryption, and 99.9% uptime guarantee for peace of mind.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced About Section -->
+    <section class="about" id="about">
+        <div class="about-container">
+            <div class="about-content">
+                <h2>Built for Modern Businesses</h2>
+                <p>
+                    I-Voice is more than just an invoice management system - it's your complete billing solution designed to help businesses of all sizes streamline their financial operations and get paid faster.
+                </p>
+                <p>
+                    Our intuitive platform combines powerful features with an elegant user experience, making professional invoice management accessible to everyone, from freelancers to enterprise teams.
+                </p>
+                <ul class="about-highlights">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        Lightning-fast invoice creation with smart templates
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        Automated payment reminders and follow-ups
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        Multi-currency support for global businesses
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        Comprehensive reporting and analytics dashboard
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        Seamless integration with popular accounting software
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-primary" onclick="showAuthModal('register')">
+                    <i class="fas fa-rocket"></i>
+                    Start Your Journey
+                </a>
+            </div>
+            <div class="about-image">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced CTA Section -->
+    <section class="cta" id="pricing">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Billing?</h2>
+                <p>
+                    Join thousands of businesses already using I-Voice to streamline their invoice management. 
+                    Start your free trial today - no credit card required, no setup fees, no hidden costs.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary" onclick="showAuthModal('register')">
+                        <i class="fas fa-star"></i>
+                        Start Free Trial
+                    </a>
+                    <a href="#contact" class="btn btn-outline">
+                        <i class="fas fa-phone"></i>
+                        Talk to Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    I-Voice
+                </div>
+                <p>
+                    Empowering businesses with professional invoice management solutions. 
+                    Streamline your billing, get paid faster, and grow your business with confidence.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Product</h3>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#">Templates</a>
+                <a href="#">Integrations</a>
+                <a href="#">API Documentation</a>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <a href="#about">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Press Kit</a>
+                <a href="#">Partner Program</a>
+                <a href="#">Affiliate Program</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Support</a>
+                <a href="#">System Status</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 I-Voice Invoice Management System. All rights reserved. Built with ❤️ for modern businesses.</p>
+        </div>
+    </footer>
+
+    
         <!-- Registration Form -->
-        <div id="register" class="form">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #667eea;">Create Account</h2>
-            <form onsubmit="registerUser(event)">
-                <div class="form-group">
-                    <label for="regName">Full Name</label>
-                    <input type="text" id="regName" required>
+        <div id="register" class="auth-section">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="auth-logo">
+                            <div class="logo-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <h1>I-Voice</h1>
+                        </div>
+                        <h2>Create Your Account</h2>
+                        <p>Start managing your invoices professionally</p>
+                    </div>
+                    
+                    <form class="auth-form" onsubmit="registerUser(event)">
+                        <div class="form-group">
+                            <label for="regName">Full Name</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="regName" placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regEmail">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="regEmail" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regPassword">Password</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="regPassword" placeholder="Create a strong password" required minlength="6">
+                                <button type="button" class="password-toggle" onclick="togglePassword('regPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">
+                            <span>Create Account</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="#" onclick="showLogin()">Sign in here</a></p>
+                    </div>
+                    
+                    <div class="auth-close">
+                        <button onclick="showLanding()" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="regEmail">Email Address</label>
-                    <input type="email" id="regEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="regPassword">Password</label>
-                    <input type="password" id="regPassword" required minlength="6">
-                </div>
-                <div class="form-buttons">
-                    <button type="submit" class="btn btn-primary">Register</button>
-                    <button type="button" class="btn btn-secondary" onclick="showLanding()">Back</button>
-                </div>
-            </form>
-            <div class="switch-form">
-                Already have an account? <a href="#" onclick="showLogin()">Login</a>
             </div>
         </div>
 
         <!-- Login Form -->
-        <div id="login" class="form">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #667eea;">Welcome Back</h2>
-            <form onsubmit="loginUser(event)">
-                <div class="form-group">
-                    <label for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" required>
+        <div id="login" class="auth-section">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="auth-logo">
+                            <div class="logo-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <h1>I-Voice</h1>
+                        </div>
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to continue to your dashboard</p>
+                    </div>
+                    
+                    <form class="auth-form" onsubmit="loginUser(event)">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="rememberMe">
+                                <span class="checkmark"></span>
+                                Remember me
+                            </label>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">
+                            <span>Sign In</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="#" onclick="showRegister()">Create one here</a></p>
+                    </div>
+                    
+                    <div class="auth-close">
+                        <button onclick="showLanding()" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" required>
-                </div>
-                <div class="form-buttons">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                    <button type="button" class="btn btn-secondary" onclick="showLanding()">Back</button>
-                </div>
-            </form>
-            <div class="switch-form">
-                Don't have an account? <a href="#" onclick="showRegister()">Register</a>
             </div>
         </div>
-    </div>
 
-    <script>
+
+        <script>
         // Show/Hide sections
         function showSection(sectionId) {
-            document.querySelectorAll('.section, .form').forEach(el => el.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
+            // Hide all auth sections
+            document.querySelectorAll('.auth-section').forEach(el => el.classList.remove('active'));
+            
+            // Handle landing page (show/hide entire body content except forms)
+            if (sectionId === 'landing') {
+                document.querySelectorAll('.auth-section').forEach(el => el.style.display = 'none');
+                document.body.style.overflow = 'auto';
+            } else {
+                document.getElementById(sectionId).classList.add('active');
+                document.getElementById(sectionId).style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
         }
 
-        function showLanding() { showSection('landing'); }
-        function showRegister() { showSection('register'); }
-        function showLogin() { showSection('login'); }
+        function showLanding() { 
+            showSection('landing'); 
+        }
+
+        function showRegister() { 
+            showSection('register'); 
+        }
+
+        function showLogin() { 
+            showSection('login'); 
+        }
 
         // Registration
         function registerUser(event) {
             event.preventDefault();
             
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
+
+            // Validate inputs
+            if (!name || !email || !password) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
 
             // Check if user already exists
             const existingUsers = JSON.parse(localStorage.getItem('ivoice_users') || '[]');
-            if (existingUsers.find(user => user.email === email)) {
+            if (existingUsers.find(user => user.email.toLowerCase() === email.toLowerCase())) {
                 alert('User already exists! Please login.');
                 showLogin();
                 return;
@@ -294,11 +1792,16 @@
         function loginUser(event) {
             event.preventDefault();
             
-            const email = document.getElementById('loginEmail').value;
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            if (!email || !password) {
+                alert('Please fill all fields!');
+                return;
+            }
+
             const users = JSON.parse(localStorage.getItem('ivoice_users') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
+            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
             if (user) {
                 // Set session
@@ -311,12 +1814,90 @@
             }
         }
 
+        // Password toggle functionality
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.parentElement.querySelector('.password-toggle i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                button.className = 'fas fa-eye';
+            }
+        }
+
+        // Updated show functions to work with the new sections
+        function showAuthModal(type) {
+            if (type === 'login') {
+                showLogin();
+            } else {
+                showRegister();
+            }
+        }
+
+        function hideAuthModal() {
+            showLanding();
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(15, 23, 42, 0.98)';
+                navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
+            } else {
+                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
         // Check if already logged in
         window.onload = function() {
             if (sessionStorage.getItem('ivoice_current_user')) {
                 window.location.href = 'main.html';
             }
+            
+            // Initialize landing page
+            showLanding();
         };
-    </script>
+
+        // Close forms with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                showLanding();
+            }
+        });
+
+        // Prevent form submission on Enter in input fields (except submit buttons)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'submit') {
+                e.preventDefault();
+                const form = e.target.closest('form');
+                if (form) {
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.click();
+                    }
+                }
+            }
+        });
+        </script>
+
 </body>
 </html>
