@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-Voice - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <!-- Add these script tags before closing </head> tag -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">I-Voice</div>
+                <div class="user-info">
+                    <span id="userName">Welcome!</span>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" onclick="showTab('parties')">Parties</button>
+            <button class="tab-btn" onclick="showTab('items')">Items</button>
+            <button class="tab-btn" onclick="showTab('invoices')">Invoices</button>
+            <button class="tab-btn" onclick="showTab('reports')">Reports</button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Sales</h3>
+                    <p class="amount" id="totalSales">₹0</p>
+                </div>
+                <div class="card">
+                    <h3>Outstanding</h3>
+                    <p class="amount" id="totalOutstanding">₹0</p>
+                </div>
+                <div class="card">
+                    <h3>Items</h3>
+                    <p class="amount" id="totalItems">0</p>
+                </div>
+                <div class="card">
+                    <h3>Parties</h3>
+                    <p class="amount" id="totalParties">0</p>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <button class="action-btn" onclick="showTab('parties')">Add Party</button>
+                <button class="action-btn" onclick="showTab('items')">Add Item</button>
+                <button class="action-btn" onclick="createNewInvoice()">New Invoice</button>
+            </div>
+
+            <h3>Recent Invoices</h3>
+            <div id="dashboardInvoicesList" class="dashboard-invoices"></div>
+        </div>
+
+        <!-- Parties Tab -->
+        <div id="parties" class="tab-content">
+            <div class="tab-header">
+                <h2>Parties</h2>
+                <button class="btn-primary" onclick="showAddPartyModal()">+ New Party</button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="partySearch" placeholder="Search parties..." oninput="searchParties()">
+            </div>
+            
+            <div id="partiesList" class="list-container"></div>
+        </div>
+
+        <!-- Items Tab -->
+        <div id="items" class="tab-content">
+            <div class="tab-header">
+                <h2>Items</h2>
+                <button class="btn-primary" onclick="showAddItemModal()">+ New Item</button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="itemSearch" placeholder="Search items..." oninput="searchItems()">
+            </div>
+            
+            <div id="itemsList" class="list-container"></div>
+        </div>
+
+        <!-- Invoices Tab -->
+        <div id="invoices" class="tab-content">
+            <div class="tab-header">
+                <h2>Invoices</h2>
+                <button class="btn-primary" onclick="createNewInvoice()">+ New Invoice</button>
+            </div>
+            
+            <div id="invoicesList" class="list-container"></div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <h2>Reports</h2>
+            <div class="reports-grid">
+                <div class="report-card" onclick="generateSalesReport()">
+                    <h3>Sales Report</h3>
+                    <p>View detailed sales analytics</p>
+                </div>
+                <div class="report-card" onclick="generatePartyReport()">
+                    <h3>Party Report</h3>
+                    <p>Outstanding and payment details</p>
+                </div>
+                <div class="report-card" onclick="generateItemReport()">
+                    <h3>Inventory Report</h3>
+                    <p>Stock levels and item details</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <!-- Add Party Modal -->
+        <div id="addPartyModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Party</h3>
+                    <span class="close" onclick="closeModal('addPartyModal')">&times;</span>
+                </div>
+                <form onsubmit="addParty(event)">
+                    <div class="form-group">
+                        <label>Party Name *</label>
+                        <input type="text" id="partyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="partyPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email (Optional)</label>
+                        <input type="email" id="partyEmail">
+                    </div>
+                    <div class="form-group">
+                        <label>GST Number</label>
+                        <input type="text" id="partyGST" placeholder="e.g., 37BFHPC8175F1ZC">
+                    </div>
+                    <div class="form-group">
+                        <label>Address *</label>
+                        <textarea id="partyAddress" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <select id="partyState" required>
+                            <option value="">Select State</option>
+                            <option value="01-Jammu and Kashmir">01-Jammu and Kashmir</option>
+                            <option value="02-Himachal Pradesh">02-Himachal Pradesh</option>
+                            <option value="03-Punjab">03-Punjab</option>
+                            <option value="04-Chandigarh">04-Chandigarh</option>
+                            <option value="05-Uttarakhand">05-Uttarakhand</option>
+                            <option value="06-Haryana">06-Haryana</option>
+                            <option value="07-Delhi">07-Delhi</option>
+                            <option value="08-Rajasthan">08-Rajasthan</option>
+                            <option value="09-Uttar Pradesh">09-Uttar Pradesh</option>
+                            <option value="10-Bihar">10-Bihar</option>
+                            <option value="11-Sikkim">11-Sikkim</option>
+                            <option value="12-Arunachal Pradesh">12-Arunachal Pradesh</option>
+                            <option value="13-Nagaland">13-Nagaland</option>
+                            <option value="14-Manipur">14-Manipur</option>
+                            <option value="15-Mizoram">15-Mizoram</option>
+                            <option value="16-Tripura">16-Tripura</option>
+                            <option value="17-Meghalaya">17-Meghalaya</option>
+                            <option value="18-Assam">18-Assam</option>
+                            <option value="19-West Bengal">19-West Bengal</option>
+                            <option value="20-Jharkhand">20-Jharkhand</option>
+                            <option value="21-Orissa">21-Orissa</option>
+                            <option value="22-Chhattisgarh">22-Chhattisgarh</option>
+                            <option value="23-Madhya Pradesh">23-Madhya Pradesh</option>
+                            <option value="24-Gujarat">24-Gujarat</option>
+                            <option value="25-Daman and Diu">25-Daman and Diu</option>
+                            <option value="26-Dadra and Nagar Haveli">26-Dadra and Nagar Haveli</option>
+                            <option value="27-Maharashtra">27-Maharashtra</option>
+                            <option value="28-Andhra Pradesh">28-Andhra Pradesh</option>
+                            <option value="29-Karnataka">29-Karnataka</option>
+                            <option value="30-Goa">30-Goa</option>
+                            <option value="31-Lakshadweep">31-Lakshadweep</option>
+                            <option value="32-Kerala">32-Kerala</option>
+                            <option value="33-Tamil Nadu">33-Tamil Nadu</option>
+                            <option value="34-Puducherry">34-Puducherry</option>
+                            <option value="35-Andaman and Nicobar Islands">35-Andaman and Nicobar Islands</option>
+                            <option value="36-Telangana">36-Telangana</option>
+                            <option value="37-Andhra Pradesh">37-Andhra Pradesh</option>
+                        </select>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('addPartyModal')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Add Item Modal -->
+        <div id="addItemModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Item</h3>
+                    <span class="close" onclick="closeModal('addItemModal')">&times;</span>
+                </div>
+                <form onsubmit="addItem(event)">
+                    <div class="form-group">
+                        <label>Item Name *</label>
+                        <input type="text" id="itemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>HSN/SAC Code</label>
+                        <input type="text" id="itemHSN" placeholder="e.g., 8402">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <select id="itemUnit">
+                            <option value="Nos">Nos</option>
+                            <option value="Kg">Kg</option>
+                            <option value="Ltr">Ltr</option>
+                            <option value="Mtr">Mtr</option>
+                            <option value="Pcs">Pcs</option>
+                            <option value="Box">Box</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate (Price/Unit) *</label>
+                        <input type="number" id="itemRate" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST Rate</label>
+                        <select id="itemGSTRate">
+                            <option value="0">None (0%)</option>
+                            <option value="0">Exempt (0%)</option>
+                            <option value="0.25">IGST@0.25%</option>
+                            <option value="3">IGST@3%</option>
+                            <option value="5">IGST@5%</option>
+                            <option value="12">IGST@12%</option>
+                            <option value="18" selected>IGST@18%</option>
+                            <option value="28">IGST@28%</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="itemStock" value="0">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('addItemModal')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Invoice Modal -->
+        <div id="invoiceModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3>Create Invoice</h3>
+                    <span class="close" onclick="closeModal('invoiceModal')">&times;</span>
+                </div>
+                <div class="invoice-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <label class="switch">
+                                    <input type="checkbox" id="invoiceNumberToggle" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <span>Auto</span>
+                                Invoice Number
+                            </label>
+                            <input type="text" id="invoiceNumber" readonly style="background-color: #f0f0f0;">
+                        </div>
+                        <div class="form-group">
+                            <label>Invoice Date</label>
+                            <input type="date" id="invoiceDate" required>
+                        </div>
+                    </div>
+
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Select Party *</label>
+                            <select id="invoiceParty" required onchange="updatePartyDetails()">
+                                <option value="">Choose Party...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Type</label>
+                            <select id="paymentType">
+                                <option value="Credit">Credit</option>
+                                <option value="Cash">Cash</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>PO Date</label>
+                            <input type="date" id="poDate">
+                        </div>
+                        <div class="form-group">
+                            <label>PO Number</label>
+                            <input type="text" id="poNumber">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>E-Way Bill No.</label>
+                        <input type="text" id="eWayBill">
+                    </div>
+                    
+                    <h4>Invoice Items</h4>
+                    <div class="items-section">
+                        <div class="item-row">
+                            <select class="item-select" onchange="updateItemDetails(this)">
+                                <option value="">Select Item...</option>
+                            </select>
+                            <input type="number" class="item-qty" placeholder="Qty" min="1" onchange="calculateItemTotal(this)">
+                            <input type="number" class="item-rate" placeholder="Rate" step="0.01" onchange="calculateItemTotal(this)">
+                            <input type="number" class="item-total" placeholder="Total" readonly>
+                            <button type="button" class="btn-remove" onclick="removeItemRow(this)">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add-item" onclick="addItemRow()">+ Add Item</button>
+                    
+                    <div class="invoice-totals">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="invoiceSubtotal">₹0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Total Tax:</span>
+                            <span id="invoiceTax">₹0.00</span>
+                        </div>
+                        <div class="total-row final">
+                            <span>Total Amount:</span>
+                            <span id="invoiceTotal">₹0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Received:</span>
+                            <input type="number" id="receivedAmount" step="0.01" value="0" onchange="calculateBalance()">
+                        </div>
+                        <div class="total-row balance">
+                            <span>Balance Due:</span>
+                            <span id="balanceDue" style="color: #e74c3c; font-weight: bold;">₹0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-primary" onclick="saveInvoice()">Save Invoice</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('invoiceModal')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Add this notification system before closing </body> tag -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

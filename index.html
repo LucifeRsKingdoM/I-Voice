@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-Voice - Smart Billing Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tagline {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .features {
+            text-align: left;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            color: #555;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 1rem 0;
+            width: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .form {
+            display: none;
+            text-align: left;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .switch-form {
+            margin-top: 1rem;
+            color: #666;
+        }
+
+        .switch-form a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Landing Section -->
+        <div id="landing" class="section active">
+            <div class="logo">I-Voice</div>
+            <p class="tagline">Professional Billing Made Simple</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">✓</div>
+                    <span>Easy Invoice Generation</span>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✓</div>
+                    <span>Client & Inventory Management</span>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✓</div>
+                    <span>Professional Reports</span>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✓</div>
+                    <span>Works Offline</span>
+                </div>
+            </div>
+            
+            <button class="cta-button" onclick="showRegister()">Start Now - It's Free!</button>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register" class="form">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #667eea;">Create Account</h2>
+            <form onsubmit="registerUser(event)">
+                <div class="form-group">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" required minlength="6">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" onclick="showLanding()">Back</button>
+                </div>
+            </form>
+            <div class="switch-form">
+                Already have an account? <a href="#" onclick="showLogin()">Login</a>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="form">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #667eea;">Welcome Back</h2>
+            <form onsubmit="loginUser(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary" onclick="showLanding()">Back</button>
+                </div>
+            </form>
+            <div class="switch-form">
+                Don't have an account? <a href="#" onclick="showRegister()">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show/Hide sections
+        function showSection(sectionId) {
+            document.querySelectorAll('.section, .form').forEach(el => el.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function showLanding() { showSection('landing'); }
+        function showRegister() { showSection('register'); }
+        function showLogin() { showSection('login'); }
+
+        // Registration
+        function registerUser(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            // Check if user already exists
+            const existingUsers = JSON.parse(localStorage.getItem('ivoice_users') || '[]');
+            if (existingUsers.find(user => user.email === email)) {
+                alert('User already exists! Please login.');
+                showLogin();
+                return;
+            }
+
+            // Save user
+            const newUser = { name, email, password, id: Date.now() };
+            existingUsers.push(newUser);
+            localStorage.setItem('ivoice_users', JSON.stringify(existingUsers));
+
+            alert('Registration successful! Please login.');
+            document.getElementById('loginEmail').value = email;
+            showLogin();
+        }
+
+        // Login
+        function loginUser(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('ivoice_users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Set session
+                sessionStorage.setItem('ivoice_current_user', JSON.stringify(user));
+                
+                // Redirect to main app
+                window.location.href = 'main.html';
+            } else {
+                alert('Invalid credentials! Please try again.');
+            }
+        }
+
+        // Check if already logged in
+        window.onload = function() {
+            if (sessionStorage.getItem('ivoice_current_user')) {
+                window.location.href = 'main.html';
+            }
+        };
+    </script>
+</body>
+</html>
