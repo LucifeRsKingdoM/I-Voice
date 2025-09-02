@@ -1369,6 +1369,188 @@ function showReportModal(title, content) {
     reportModal.classList.add('active');
 }
 
+
+// Profile functionality
+let profileEditMode = false;
+
+// Toggle profile menu dropdown
+function toggleProfileMenu() {
+    const dropdown = document.getElementById('profileDropdown');
+    const menu = document.querySelector('.profile-menu');
+    dropdown.classList.toggle('active');
+    menu.classList.toggle('active');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const menu = document.querySelector('.profile-menu');
+    if (!menu.contains(event.target)) {
+        document.getElementById('profileDropdown').classList.remove('active');
+        menu.classList.remove('active');
+    }
+});
+
+// Open profile modal
+async function openProfileModal() {
+    document.getElementById('profileModal').classList.add('active');
+    await loadUserProfile();
+    setProfileReadOnly();
+}
+
+// Close profile modal
+function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('active');
+    profileEditMode = false;
+}
+
+// Enable profile editing
+function enableProfileEdit() {
+    profileEditMode = true;
+    setProfileEditable();
+}
+
+// Set profile form to read-only
+function setProfileReadOnly() {
+    const form = document.getElementById('profileForm');
+    const inputs = form.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => input.disabled = true);
+    
+    document.getElementById('editProfileBtn').style.display = 'inline-block';
+    document.getElementById('saveProfileBtn').style.display = 'none';
+}
+
+// Set profile form to editable
+function setProfileEditable() {
+    const form = document.getElementById('profileForm');
+    const inputs = form.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => input.disabled = false);
+    
+    document.getElementById('editProfileBtn').style.display = 'none';
+    document.getElementById('saveProfileBtn').style.display = 'inline-block';
+}
+
+// Load user profile data
+async function loadUserProfile() {
+    try {
+        const supabase = await DB.waitForSupabase();
+        const user = DB.getCurrentUser();
+        
+        if (!user) throw new Error('User not found');
+        
+        const { data, error } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('user_id', user.id)
+            .single();
+            
+        if (error && error.code !== 'PGRST116') throw error;
+        
+        if (data) {
+            // Populate form with existing data
+            document.getElementById('companyName').value = data.company_name || '';
+            document.getElementById('businessType').value = data.business_type || '';
+            document.getElementById('profilePhone').value = data.phone || '';
+            document.getElementById('profileEmail').value = data.email || '';
+            document.getElementById('website').value = data.website || '';
+            document.getElementById('profileAddress').value = data.address || '';
+            document.getElementById('city').value = data.city || '';
+            document.getElementById('profileState').value = data.state || '';
+            document.getElementById('pincode').value = data.pincode || '';
+            document.getElementById('gstNumber').value = data.gst_number || '';
+            document.getElementById('panNumber').value = data.pan_number || '';
+            document.getElementById('bankName').value = data.bank_name || '';
+            document.getElementById('accountNumber').value = data.account_number || '';
+            document.getElementById('ifscCode').value = data.ifsc_code || '';
+        }
+    } catch (error) {
+        console.error('Error loading profile:', error);
+        showNotification('Error loading profile data', 'error');
+    }
+}
+
+// Save user profile
+async function saveUserProfile(event) {
+    event.preventDefault();
+    
+    try {
+        const supabase = await DB.waitForSupabase();
+        const user = DB.getCurrentUser();
+        
+        if (!user) throw new Error('User not found');
+        
+        const profileData = {
+            user_id: user.id,
+            company_name: document.getElementById('companyName').value,
+            business_type: document.getElementById('businessType').value,
+            phone: document.getElementById('profilePhone').value,
+            email: document.getElementById('profileEmail').value,
+            website: document.getElementById('website').value,
+            address: document.getElementById('profileAddress').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('profileState').value,
+            pincode: document.getElementById('pincode').value,
+            gst_number: document.getElementById('gstNumber').value,
+            pan_number: document.getElementById('panNumber').value,
+            bank_name: document.getElementById('bankName').value,
+            account_number: document.getElementById('accountNumber').value,
+            ifsc_code: document.getElementById('ifscCode').value,
+            updated_at: new Date().toISOString()
+        };
+        
+        const { data, error } = await supabase
+            .from('user_profiles')
+            .upsert([profileData], { onConflict: 'user_id' })
+            .select()
+            .single();
+            
+        if (error) throw error;
+        
+        showNotification('Profile saved successfully!', 'success');
+        setProfileReadOnly();
+        
+    } catch (error) {
+        console.error('Error saving profile:', error);
+        showNotification('Error saving profile', 'error');
+    }
+}
+
+// Update page title
+function updatePageTitle(title) {
+    document.getElementById('pageTitle').textContent = title;
+}
+
+// Enhanced showTab function
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(tabName).classList.add('active');
+    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+    
+    // Update page title
+    const titles = {
+        'dashboard': 'Dashboard',
+        'parties': 'Parties',
+        'items': 'Items', 
+        'invoices': 'Invoices',
+        'reports': 'Reports'
+    };
+    updatePageTitle(titles[tabName] || 'Dashboard');
+}
+
+// Add profile form event listener
+document.getElementById('profileForm').addEventListener('submit', saveUserProfile);
+
+
+
 async function loadUserData() {
     try {
         if (!db) {

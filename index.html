@@ -175,8 +175,6 @@
             gap: 12px;
             font-size: 2rem;
             font-weight: 800;
-            background: var(--gradient-hero);
-            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
         }
@@ -184,13 +182,12 @@
         .logo-icon {
             width: 50px;
             height: 50px;
-            background: var(--gradient-primary);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
-            color: white;
+            color: rgb(255, 255, 255);
             box-shadow: 0 8px 30px rgba(79, 70, 229, 0.3);
         }
 
@@ -1292,6 +1289,165 @@
     display: block;
 }
 
+
+/* Enhanced Mobile Responsive */
+@media (max-width: 1024px) {
+    .hero-container,
+    .about-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .hero-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Mobile Navigation */
+    .nav-container {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+    }
+    
+    .nav-menu {
+        display: none;
+        width: 100%;
+        order: 3;
+        flex-direction: column;
+        background: rgba(15, 23, 42, 0.98);
+        padding: 1rem 0;
+        border-radius: 12px;
+        margin-top: 1rem;
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .nav-buttons {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    
+    .nav-buttons .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        min-width: 80px;
+    }
+    
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+        display: block;
+        background: transparent;
+        border: none;
+        color: var(--white);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        order: 2;
+        margin-left: auto;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+    }
+
+    .section-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .invoice-mockup {
+        height: 400px;
+    }
+
+    .mockup-content {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 0 0.5rem;
+    }
+    
+    .logo {
+        font-size: 1.3rem;
+    }
+    
+    .logo-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+    
+    .nav-buttons .btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        min-width: 70px;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-container,
+    .features-container,
+    .about-container,
+    .cta-container {
+        padding: 0 1rem;
+    }
+}
+
+/* Desktop - Hide mobile menu toggle */
+@media (min-width: 769px) {
+    .mobile-menu-toggle {
+        display: none;
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -1311,10 +1467,16 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-receipt"></i>
+                    <img src="assets/logo.png" alt="I-Voice Logo" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
                 I-Voice
             </a>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+
             <ul class="nav-menu">
                 <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
@@ -1582,10 +1744,11 @@
             <div class="footer-brand">
                 <div class="footer-logo">
                     <div class="logo-icon">
-                        <i class="fas fa-receipt"></i>
+                        <img src="assets/logo.png" alt="I-Voice Logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     I-Voice
                 </div>
+
                 <p>
                     Empowering businesses with professional invoice management solutions. 
                     Streamline your billing, get paid faster, and grow your business with confidence.
@@ -1629,10 +1792,11 @@
                     <div class="auth-header">
                         <div class="auth-logo">
                             <div class="logo-icon">
-                                <i class="fas fa-receipt"></i>
+                                <img src="assets/logo.png" alt="I-Voice Logo" style="width: 100%; height: 100%; object-fit: contain;">
                             </div>
                             <h1>I-Voice</h1>
                         </div>
+
                         <h2>Create Your Account</h2>
                         <p>Start managing your invoices professionally</p>
                     </div>
@@ -1691,10 +1855,11 @@
                     <div class="auth-header">
                         <div class="auth-logo">
                             <div class="logo-icon">
-                                <i class="fas fa-receipt"></i>
+                                <img src="assets/logo.png" alt="I-Voice Logo" style="width: 100%; height: 100%; object-fit: contain;">
                             </div>
                             <h1>I-Voice</h1>
                         </div>
+                        
                         <h2>Welcome Back</h2>
                         <p>Sign in to continue to your dashboard</p>
                     </div>
@@ -1750,20 +1915,28 @@
 
         <script>
         // Show/Hide sections
+        // Show/Hide sections - FIXED VERSION
         function showSection(sectionId) {
-            // Hide all auth sections
-            document.querySelectorAll('.auth-section').forEach(el => el.classList.remove('active'));
+            // Hide all auth sections first
+            document.querySelectorAll('.auth-section').forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            });
             
-            // Handle landing page (show/hide entire body content except forms)
+            // Handle landing page
             if (sectionId === 'landing') {
-                document.querySelectorAll('.auth-section').forEach(el => el.style.display = 'none');
                 document.body.style.overflow = 'auto';
             } else {
-                document.getElementById(sectionId).classList.add('active');
-                document.getElementById(sectionId).style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+                // Show the requested section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.style.display = 'flex';
+                    targetSection.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
             }
         }
+
 
         function showLanding() { 
             showSection('landing'); 
@@ -1968,6 +2141,32 @@
                 }
             }
         });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            
+            navMenu.classList.toggle('active');
+            
+            if (navMenu.classList.contains('active')) {
+                toggleBtn.className = 'fas fa-times';
+            } else {
+                toggleBtn.className = 'fas fa-bars';
+            }
+        }
+
+        // Close mobile menu when clicking on links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.querySelector('.nav-menu');
+                const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+                
+                navMenu.classList.remove('active');
+                toggleBtn.className = 'fas fa-bars';
+            });
+        });
+
         </script>
 
         

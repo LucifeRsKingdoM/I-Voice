@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I-Voice - Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <!-- Add these script tags before closing </head> tag -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -37,52 +38,132 @@
 <body>
     <div class="app-container">
         <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">I-Voice</div>
-                <div class="user-info">
-                    <span id="userName">Welcome!</span>
-                    <button class="btn-logout" onclick="logout()">Logout</button>
+        <!-- Enhanced Professional Header -->
+<header class="header">
+    <div class="header-content">
+        <div class="header-left">
+            <div class="logo">
+                <img src="assets/logo.png" alt="I-Voice Logo" class="logo-image">
+                <span class="logo-text">I-Voice</span>
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        </div>
+        
+        <div class="header-right">
+            <span class="welcome-text" id="userName">Welcome, User!</span>
+            <div class="user-info">
+                
+                <div class="profile-menu">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </button>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-item" onclick="openProfileModal()">
+                            <i class="fas fa-user-edit"></i>
+                            <span>My Profile</span>
+                        </div>
+                        <div class="dropdown-item" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </div>
+</header>
 
-        <!-- Navigation Tabs -->
-        <nav class="nav-tabs">
-            <button class="tab-btn active" onclick="showTab('dashboard')">Dashboard</button>
-            <button class="tab-btn" onclick="showTab('parties')">Parties</button>
-            <button class="tab-btn" onclick="showTab('items')">Items</button>
-            <button class="tab-btn" onclick="showTab('invoices')">Invoices</button>
-            <button class="tab-btn" onclick="showTab('reports')">Reports</button>
-        </nav>
+<!-- Enhanced Navigation -->
+<nav class="nav-tabs">
+    <button class="tab-btn active" data-tab="dashboard" onclick="showTab('dashboard')">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+    </button>
+    <button class="tab-btn" data-tab="parties" onclick="showTab('parties')">
+        <i class="fas fa-users"></i>
+        <span>Parties</span>
+    </button>
+    <button class="tab-btn" data-tab="items" onclick="showTab('items')">
+        <i class="fas fa-box"></i>
+        <span>Items</span>
+    </button>
+    <button class="tab-btn" data-tab="invoices" onclick="showTab('invoices')">
+        <i class="fas fa-file-invoice"></i>
+        <span>Invoices</span>
+    </button>
+    <button class="tab-btn" data-tab="reports" onclick="showTab('reports')">
+        <i class="fas fa-chart-bar"></i>
+        <span>Reports</span>
+    </button>
+</nav>
+
 
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
-            <div class="dashboard-cards">
-                <div class="card">
-                    <h3>Total Sales</h3>
-                    <p class="amount" id="totalSales">₹0</p>
-                </div>
-                <div class="card">
-                    <h3>Outstanding</h3>
-                    <p class="amount" id="totalOutstanding">₹0</p>
-                </div>
-                <div class="card">
-                    <h3>Items</h3>
-                    <p class="amount" id="totalItems">0</p>
-                </div>
-                <div class="card">
-                    <h3>Parties</h3>
-                    <p class="amount" id="totalParties">0</p>
-                </div>
+            <!-- Modern Dashboard Cards -->
+<div class="dashboard-cards">
+    <div class="card modern-card sales-card">
+        <div class="card-icon">
+        </div>
+        <div class="card-content">
+            <h3>Total Sales</h3>
+            <div class="amount" id="totalSales">₹0</div>
+            <div class="card-trend positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12.5%</span>
             </div>
+        </div>
+    </div>
+    
+    <div class="card modern-card outstanding-card">
+        <div class="card-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="card-content">
+            <h3>Outstanding</h3>
+            <div class="amount" id="totalOutstanding">₹0</div>
+            <div class="card-trend negative">
+                <i class="fas fa-arrow-down"></i>
+                <span>-3.2%</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card modern-card items-card">
+        <div class="card-icon">
+            <i class="fas fa-cube"></i>
+        </div>
+        <div class="card-content">
+            <h3>Items</h3>
+            <div class="amount" id="totalItems">0</div>
+            <div class="card-info">Total Products</div>
+        </div>
+    </div>
+    
+    <div class="card modern-card parties-card">
+        <div class="card-icon">
+        </div>
+        <div class="card-content">
+            <h3>Parties</h3>
+            <div class="amount" id="totalParties">0</div>
+            <div class="card-info">Active Customers</div>
+        </div>
+    </div>
+</div>
+
             
             <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <button class="action-btn" onclick="showTab('parties')">Add Party</button>
-                <button class="action-btn" onclick="showTab('items')">Add Item</button>
-                <button class="action-btn" onclick="createNewInvoice()">New Invoice</button>
+                <button class="action-btn" onclick="showTab('parties')">Parties</button>
+                <button class="action-btn" onclick="createNewInvoice()">Invoices</button>
+                <button class="action-btn" onclick="showTab('items')">Items</button>
             </div>
+
 
             <h3>Recent Invoices</h3>
             <div id="dashboardInvoicesList" class="dashboard-invoices"></div>
@@ -390,6 +471,153 @@
     </div>
     <!-- Add this notification system before closing </body> tag -->
     <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Profile Modal -->
+<div id="profileModal" class="modal">
+    <div class="modal-content profile-modal">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-user-circle"></i>
+                Business Profile
+            </h2>
+            <span class="close" onclick="closeProfileModal()">&times;</span>
+        </div>
+        
+        <form id="profileForm" class="profile-form">
+            <div class="form-section">
+                <h3>Company Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="companyName">Company Name *</label>
+                        <input type="text" id="companyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessType">Business Type</label>
+                        <input type="text" id="businessType" placeholder="e.g., MFRS STEAM & BOILER EQUIPMENTS">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Contact Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="profilePhone">Phone Number *</label>
+                        <input type="tel" id="profilePhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email Address *</label>
+                        <input type="email" id="profileEmail" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" placeholder="https://www.yourcompany.com">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Address Information</h3>
+                <div class="form-group">
+                    <label for="profileAddress">Address *</label>
+                    <textarea id="profileAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileState">State *</label>
+                        <select id="profileState" required>
+                            <option value="">Select State</option>
+                            <option value="01-Jammu and Kashmir">01-Jammu and Kashmir</option>
+                            <option value="02-Himachal Pradesh">02-Himachal Pradesh</option>
+                            <option value="03-Punjab">03-Punjab</option>
+                            <option value="04-Chandigarh">04-Chandigarh</option>
+                            <option value="05-Uttarakhand">05-Uttarakhand</option>
+                            <option value="06-Haryana">06-Haryana</option>
+                            <option value="07-Delhi">07-Delhi</option>
+                            <option value="08-Rajasthan">08-Rajasthan</option>
+                            <option value="09-Uttar Pradesh">09-Uttar Pradesh</option>
+                            <option value="10-Bihar">10-Bihar</option>
+                            <option value="11-Sikkim">11-Sikkim</option>
+                            <option value="12-Arunachal Pradesh">12-Arunachal Pradesh</option>
+                            <option value="13-Nagaland">13-Nagaland</option>
+                            <option value="14-Manipur">14-Manipur</option>
+                            <option value="15-Mizoram">15-Mizoram</option>
+                            <option value="16-Tripura">16-Tripura</option>
+                            <option value="17-Meghalaya">17-Meghalaya</option>
+                            <option value="18-Assam">18-Assam</option>
+                            <option value="19-West Bengal">19-West Bengal</option>
+                            <option value="20-Jharkhand">20-Jharkhand</option>
+                            <option value="21-Orissa">21-Orissa</option>
+                            <option value="22-Chhattisgarh">22-Chhattisgarh</option>
+                            <option value="23-Madhya Pradesh">23-Madhya Pradesh</option>
+                            <option value="24-Gujarat">24-Gujarat</option>
+                            <option value="25-Daman and Diu">25-Daman and Diu</option>
+                            <option value="26-Dadra and Nagar Haveli">26-Dadra and Nagar Haveli</option>
+                            <option value="27-Maharashtra">27-Maharashtra</option>
+                            <option value="28-Andhra Pradesh">28-Andhra Pradesh</option>
+                            <option value="29-Karnataka">29-Karnataka</option>
+                            <option value="30-Goa">30-Goa</option>
+                            <option value="31-Lakshadweep">31-Lakshadweep</option>
+                            <option value="32-Kerala">32-Kerala</option>
+                            <option value="33-Tamil Nadu">33-Tamil Nadu</option>
+                            <option value="34-Puducherry">34-Puducherry</option>
+                            <option value="35-Andaman and Nicobar Islands">35-Andaman and Nicobar Islands</option>
+                            <option value="36-Telangana">36-Telangana</option>
+                            <option value="37-Andhra Pradesh">37-Andhra Pradesh</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pincode *</label>
+                        <input type="text" id="pincode" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Tax Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gstNumber">GST Number</label>
+                        <input type="text" id="gstNumber" placeholder="22AAAAA0000A1Z5">
+                    </div>
+                    <div class="form-group">
+                        <label for="panNumber">PAN Number</label>
+                        <input type="text" id="panNumber" placeholder="AAAAA0000A">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Banking Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bankName">Bank Name</label>
+                        <input type="text" id="bankName">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" id="accountNumber">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ifscCode">IFSC Code</label>
+                    <input type="text" id="ifscCode">
+                </div>
+            </div>
+            
+            <div class="form-buttons">
+                <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="editProfileBtn" onclick="enableProfileEdit()">Edit</button>
+                <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
     <script src="script.js"></script>
 
